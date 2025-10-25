@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Career Co-Pilot | AI Job Research & Resume Optimizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="badge">🚀 Career Co-Pilot</div>
+      <h1>AI-powered job research, resume coaching, and cover letters</h1>
+      <p>
+        Discover curated roles tailored to your skills, optimize your resume for
+        clarity and impact, and instantly draft cover letters that mirror each
+        job description. Powered by lightweight AI heuristics so you can move
+        from search to send in minutes.
+      </p>
+    </header>
+
+    <main>
+      <section aria-labelledby="search-heading">
+        <h2 id="search-heading">Tell us about your goals</h2>
+        <p class="lead">
+          Paste your resume highlights and interests so the assistant can score
+          job postings, surface missing keywords, and tailor communications.
+        </p>
+
+        <form id="job-search-form">
+          <fieldset>
+            <label for="interests">Target roles, industries, or skills</label>
+            <input
+              type="text"
+              id="interests"
+              name="interests"
+              placeholder="e.g. Generative AI product management, LLM strategy, fintech"
+              autocomplete="off"
+              required
+            />
+          </fieldset>
+
+          <fieldset>
+            <label for="resume">Paste your resume or experience summary</label>
+            <textarea
+              id="resume"
+              name="resume"
+              placeholder="Summarize your recent roles, accomplishments, and tools. Include bullet points and metrics where possible."
+              required
+            ></textarea>
+          </fieldset>
+
+          <fieldset class="actions">
+            <button type="submit" class="primary">🔍 Find matching jobs</button>
+            <button type="button" id="optimize-resume" class="secondary">
+              ✨ Optimize resume insights
+            </button>
+          </fieldset>
+        </form>
+      </section>
+
+      <section id="results-section" class="hidden" aria-live="polite">
+        <h2>Curated opportunities</h2>
+        <p class="lead" id="match-summary"></p>
+        <div id="job-results" class="results"></div>
+      </section>
+
+      <section id="optimizer-section" class="hidden" aria-live="polite">
+        <h2>Resume optimizer</h2>
+        <p class="lead">
+          Recommendations grounded in recruiter best practices, aligned to the
+          jobs above.
+        </p>
+        <div id="resume-feedback" class="resume-feedback"></div>
+      </section>
+
+      <section id="cover-letter-section" class="hidden">
+        <h2>Cover letter generator</h2>
+        <p class="lead">
+          Personalize a letter in seconds. Choose a role from your matches,
+          review the generated draft, and tailor before sending.
+        </p>
+
+        <form id="cover-letter-form">
+          <fieldset>
+            <label for="candidate-name">Your name</label>
+            <input type="text" id="candidate-name" name="candidate-name" placeholder="Jordan Rivera" required />
+          </fieldset>
+          <fieldset>
+            <label for="candidate-email">Contact email (optional)</label>
+            <input type="email" id="candidate-email" name="candidate-email" placeholder="jordan@example.com" />
+          </fieldset>
+          <fieldset>
+            <label for="candidate-summary">Key achievements to highlight</label>
+            <textarea
+              id="candidate-summary"
+              name="candidate-summary"
+              placeholder="Mention 2-3 standout wins, technologies, or themes to weave into the letter."
+              required
+            ></textarea>
+          </fieldset>
+          <fieldset>
+            <label for="cover-letter-job">Select a job match</label>
+            <select id="cover-letter-job" name="cover-letter-job" required>
+              <option value="" disabled selected>Select a job after running a search</option>
+            </select>
+          </fieldset>
+          <div class="actions">
+            <button type="submit" class="primary">✍️ Draft cover letter</button>
+          </div>
+        </form>
+
+        <div id="cover-letter-output-wrapper" class="hidden">
+          <label for="cover-letter-output">Generated letter</label>
+          <textarea id="cover-letter-output" readonly></textarea>
+          <div class="cover-letter-actions">
+            <button type="button" id="copy-cover-letter" class="secondary">📋 Copy to clipboard</button>
+            <span id="copy-feedback" class="copy-success">Copied!</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      Built for thoughtful job seekers. All intelligence runs in the browser—no
+      personal data leaves this page.
+    </footer>
+
+    <script>
+      const jobLibrary = [
+        {
+          id: "ai-product-manager",
+          title: "AI Product Manager",
+          company: "Synapse Labs",
+          location: "Remote (US)",
+          type: "Full-time",
+          salary: "$145k – $175k + equity",
+          description:
+            "Lead the product roadmap for a multimodal AI assistant that powers enterprise workflows across healthcare and financial services.",
+          responsibilities: [
+            "Translate customer research into a learning agenda for the AI platform.",
+            "Collaborate with applied scientists to scope generative capabilities and evaluate model performance.",
+            "Define metrics for adoption, quality, and compliance in regulated industries.",
+          ],
+          requirements: [
+            "5+ years building or shipping ML/AI products with cross-functional teams.",
+            "Experience with experimentation frameworks, prompt engineering, and data privacy requirements.",
+            "Comfort analyzing product telemetry using SQL or Python dashboards.",
+          ],
+          tags: ["product strategy", "generative ai", "llm", "sql", "python", "experimentation"],
+          link: "https://example.com/jobs/ai-product-manager",
+        },
+        {
+          id: "ml-solutions-architect",
+          title: "Machine Learning Solutions Architect",
+          company: "Vertex Analytics",
+          location: "New York, NY",
+          type: "Hybrid",
+          salary: "$170k – $210k",
+          description:
+            "Design scalable ML platforms that power near real-time decisioning for Fortune 500 clients.",
+          responsibilities: [
+            "Own client-facing technical discovery and craft solution architectures for production ML workloads.",
+            "Mentor data science teams on feature engineering, evaluation, and responsible AI patterns.",
+            "Deploy containerized inference services using Kubernetes, Ray, and MLflow.",
+          ],
+          requirements: [
+            "8+ years across data science, ML engineering, or cloud architecture.",
+            "Hands-on with AWS, Terraform, vector databases, and CI/CD pipelines.",
+            "Ability to communicate complex concepts to both technical and executive stakeholders.",
+          ],
+          tags: ["aws", "terraform", "mlops", "ray", "kubernetes", "client engagement"],
+          link: "https://example.com/jobs/ml-solutions-architect",
+        },
+        {
+          id: "data-science-lead",
+          title: "Lead Data Scientist – Personalization",
+          company: "Horizon Streaming",
+          location: "Remote (North America)",
+          type: "Full-time",
+          salary: "$160k – $190k",
+          description:
+            "Shape the personalization strategy powering recommendations for 40M+ global viewers.",
+          responsibilities: [
+            "Own the experimentation roadmap for ranking models and A/B tests.",
+            "Partner with product and design to define success metrics for engagement.",
+            "Guide a pod of data scientists and MLEs through feature ideation and deployment.",
+          ],
+          requirements: [
+            "7+ years in data science with emphasis on personalization or recommendation systems.",
+            "Strong Python, SQL, and experience with orchestration tools (Airflow, dbt).",
+            "Demonstrated leadership with mentoring and cross-functional influence.",
+          ],
+          tags: ["python", "sql", "recommendation systems", "experimentation", "airflow", "leadership"],
+          link: "https://example.com/jobs/data-science-lead",
+        },
+        {
+          id: "ai-ux-researcher",
+          title: "Senior UX Researcher – Applied AI",
+          company: "Neon Canvas",
+          location: "Austin, TX",
+          type: "On-site",
+          salary: "$135k – $155k",
+          description:
+            "Investigate user trust, explainability, and workflow adoption for AI copilots in design tooling.",
+          responsibilities: [
+            "Lead foundational and evaluative research on AI-driven collaboration features.",
+            "Develop journey maps, personas, and influence product strategy for generative experiences.",
+            "Collaborate with ethics, product, and engineering to define responsible AI principles.",
+          ],
+          requirements: [
+            "6+ years in UX research with portfolio of complex SaaS or AI products.",
+            "Comfort with qualitative and quantitative methods, including usability testing and survey design.",
+            "Storytelling and facilitation skills to influence leadership decisions.",
+          ],
+          tags: ["ux research", "ai trust", "mixed methods", "storytelling", "personas"],
+          link: "https://example.com/jobs/ai-ux-researcher",
+        },
+        {
+          id: "llm-engineer",
+          title: "Senior LLM Engineer",
+          company: "Cerebro Works",
+          location: "Remote (US/EU)",
+          type: "Distributed",
+          salary: "$180k – $230k",
+          description:
+            "Build retrieval-augmented generation systems and evaluation pipelines for enterprise copilots.",
+          responsibilities: [
+            "Prototype and productionize conversational agents with guardrails and analytics.",
+            "Optimize embeddings, ranking, and caching strategies for low-latency inference.",
+            "Implement continuous evaluation harnesses leveraging human feedback and synthetic data.",
+          ],
+          requirements: [
+            "Deep knowledge of transformer architectures, vector stores, and evaluation techniques.",
+            "Proficiency in Python, LangChain, and cloud infrastructure (AWS/GCP).",
+            "Experience leading cross-functional initiatives with security and compliance stakeholders.",
+          ],
+          tags: ["langchain", "rag", "python", "vector databases", "evaluation", "observability"],
+          link: "https://example.com/jobs/llm-engineer",
+        },
+        {
+          id: "go-to-market-analyst",
+          title: "AI Go-to-Market Strategist",
+          company: "Northwind Ventures",
+          location: "San Francisco, CA",
+          type: "Hybrid",
+          salary: "$125k – $150k + bonus",
+          description:
+            "Craft commercialization narratives and sales enablement for AI-powered SaaS platforms.",
+          responsibilities: [
+            "Analyze market signals to size opportunities and inform product positioning.",
+            "Develop pitch materials, demo scripts, and ROI models for enterprise buyers.",
+            "Partner with marketing and product to design competitive intelligence loops.",
+          ],
+          requirements: [
+            "4+ years in product marketing, consulting, or strategy roles with AI exposure.",
+            "Exceptional storytelling skills and ability to translate technical concepts.",
+            "Comfort working with revenue teams to enable adoption and retention.",
+          ],
+          tags: ["product marketing", "ai strategy", "competitive intelligence", "storytelling", "sales enablement"],
+          link: "https://example.com/jobs/go-to-market-analyst",
+        },
+      ];
+
+      const stopwords = new Set(
+        "a,an,and,the,with,for,to,of,on,in,by,or,at,that,this,from,into,as,be,is,are,was,were,will,can,has,have,had,via,across,about,your,our,per,over,amp"
+          .split(",")
+          .map((w) => w.trim())
+      );
+
+      const jobResultsEl = document.getElementById("job-results");
+      const matchSummaryEl = document.getElementById("match-summary");
+      const resultsSection = document.getElementById("results-section");
+      const optimizerSection = document.getElementById("optimizer-section");
+      const resumeFeedbackEl = document.getElementById("resume-feedback");
+      const coverLetterSection = document.getElementById("cover-letter-section");
+      const coverLetterJobSelect = document.getElementById("cover-letter-job");
+      const coverLetterOutputWrapper = document.getElementById(
+        "cover-letter-output-wrapper"
+      );
+      const coverLetterOutput = document.getElementById("cover-letter-output");
+      const copyButton = document.getElementById("copy-cover-letter");
+      const copyFeedback = document.getElementById("copy-feedback");
+
+      const actionVerbs = [
+        "accelerated",
+        "achieved",
+        "built",
+        "created",
+        "delivered",
+        "designed",
+        "developed",
+        "drove",
+        "enabled",
+        "expanded",
+        "launched",
+        "led",
+        "optimized",
+        "orchestrated",
+        "pioneered",
+        "spearheaded",
+        "streamlined",
+        "transformed",
+      ];
+
+      const preprocessedJobs = jobLibrary.map((job) => ({
+        ...job,
+        keywordSet: new Set(extractKeywords(
+          [
+            job.title,
+            job.company,
+            job.description,
+            job.responsibilities.join(" "),
+            job.requirements.join(" "),
+            job.tags.join(" "),
+          ].join(" ")
+        )),
+      }));
+
+      let lastSearchContext = null;
+
+      document
+        .getElementById("job-search-form")
+        .addEventListener("submit", (event) => {
+          event.preventDefault();
+          const interests = event.target.interests.value.trim();
+          const resume = event.target.resume.value.trim();
+
+          if (!resume) {
+            alert("Please add resume details so we can evaluate matches.");
+            return;
+          }
+
+          const searchResults = rankJobs({ interests, resume });
+          renderJobResults(searchResults);
+          updateCoverLetterOptions(searchResults);
+          renderResumeFeedback(resume, searchResults);
+          lastSearchContext = { interests, resume, searchResults };
+          resultsSection.classList.remove("hidden");
+          optimizerSection.classList.remove("hidden");
+          coverLetterSection.classList.remove("hidden");
+        });
+
+      document
+        .getElementById("optimize-resume")
+        .addEventListener("click", () => {
+          const resume = document.getElementById("resume").value.trim();
+          if (!resume) {
+            alert("Add your resume or experience summary first.");
+            return;
+          }
+
+          const interests = document.getElementById("interests").value.trim();
+          const searchResults = rankJobs({ interests, resume });
+          renderJobResults(searchResults);
+          updateCoverLetterOptions(searchResults);
+          lastSearchContext = { interests, resume, searchResults };
+          resultsSection.classList.remove("hidden");
+          coverLetterSection.classList.remove("hidden");
+          optimizerSection.classList.remove("hidden");
+          renderResumeFeedback(resume, searchResults);
+        });
+
+      document
+        .getElementById("cover-letter-form")
+        .addEventListener("submit", (event) => {
+          event.preventDefault();
+          const formData = new FormData(event.target);
+          const jobId = formData.get("cover-letter-job");
+          const job = preprocessedJobs.find((item) => item.id === jobId);
+
+          if (!job) {
+            alert("Select a job match to personalize your letter.");
+            return;
+          }
+
+          const payload = {
+            name: formData.get("candidate-name").trim(),
+            email: formData.get("candidate-email").trim(),
+            summary: formData.get("candidate-summary").trim(),
+            job,
+            resume: document.getElementById("resume").value.trim(),
+          };
+
+          const letter = generateCoverLetter(payload);
+          coverLetterOutput.value = letter;
+          coverLetterOutputWrapper.classList.remove("hidden");
+          coverLetterOutput.focus();
+        });
+
+      copyButton.addEventListener("click", async () => {
+        const letter = coverLetterOutput.value.trim();
+        if (!letter) return;
+
+        try {
+          await navigator.clipboard.writeText(letter);
+          copyFeedback.classList.add("visible");
+          setTimeout(() => copyFeedback.classList.remove("visible"), 1800);
+        } catch (error) {
+          console.error("Clipboard copy failed", error);
+          alert("Copy not available in this browser. Please select and copy manually.");
+        }
+      });
+
+      function extractKeywords(text) {
+        if (!text) return [];
+        return (text
+          .toLowerCase()
+          .match(/[a-z0-9\+#]{2,}/g) || [])
+          .filter((token) => token.length > 2 && !stopwords.has(token))
+          .map((token) => token.replace(/^(\d+)(st|nd|rd|th)$/g, "$1"));
+      }
+
+      function getMatchScore(job, keywordSet, interestSet) {
+        const jobKeywords = job.keywordSet;
+        const matches = [];
+        jobKeywords.forEach((keyword) => {
+          if (keywordSet.has(keyword)) {
+            matches.push(keyword);
+          }
+        });
+
+        const coverage = matches.length / Math.max(jobKeywords.size, 1);
+        const interestOverlap = matches.filter((kw) => interestSet.has(kw)).length;
+        const interestFactor = interestSet.size
+          ? Math.min(0.35, interestOverlap / interestSet.size)
+          : 0;
+        const score = Math.round(
+          Math.min(1, coverage * 0.75 + interestFactor + Math.min(matches.length / 12, 0.25)) *
+            100
+        );
+
+        return {
+          score,
+          matches: matches.sort((a, b) => keywordSet.has(b) - keywordSet.has(a)),
+          missing: [...jobKeywords].filter((kw) => !keywordSet.has(kw)).slice(0, 8),
+        };
+      }
+
+      function rankJobs({ interests, resume }) {
+        const interestKeywords = new Set(extractKeywords(interests));
+        const resumeKeywords = new Set(extractKeywords(`${resume} ${interests}`));
+        const resumeWordCount = extractKeywords(resume).length;
+
+        const ranked = preprocessedJobs
+          .map((job) => {
+            const { score, matches, missing } = getMatchScore(job, resumeKeywords, interestKeywords);
+            return {
+              job,
+              score,
+              matches,
+              missing,
+            };
+          })
+          .sort((a, b) => b.score - a.score);
+
+        const bestMatch = ranked[0];
+        if (bestMatch) {
+          matchSummaryEl.textContent = `Top match: ${bestMatch.job.title} at ${bestMatch.job.company} (${bestMatch.score}% alignment). Resume contains ${resumeWordCount} focused keywords.`;
+        } else {
+          matchSummaryEl.textContent = "No matches yet. Expand your resume details to unlock recommendations.";
+        }
+
+        if (!ranked.length) {
+          jobResultsEl.innerHTML = `<div class="empty-state">No jobs available right now. Check back soon!</div>`;
+        }
+
+        return ranked;
+      }
+
+      function renderJobResults(rankedJobs) {
+        if (!rankedJobs.length) {
+          jobResultsEl.innerHTML = `<div class="empty-state">No jobs available right now. Check back soon!</div>`;
+          return;
+        }
+
+        const jobCards = rankedJobs
+          .map(({ job, score, matches, missing }) => {
+            const scoreClass = score >= 75 ? "high" : score >= 55 ? "medium" : "low";
+            const highlightedDescription = highlightKeywords(job.description, matches);
+            const matchHighlights = matches.slice(0, 4).map((kw) => `<span>${kw}</span>`).join("");
+            const missingTags = missing.slice(0, 3).map((kw) => `<span>${kw}</span>`).join("");
+
+            return `
+              <article class="job-card" data-job-id="${job.id}">
+                <div class="job-header">
+                  <h3>${job.title}</h3>
+                  <div class="job-meta">
+                    <span>${job.company}</span>
+                    <span>• ${job.location}</span>
+                    <span>• ${job.type}</span>
+                    <span>• ${job.salary}</span>
+                  </div>
+                </div>
+                <div class="match-score">
+                  <span class="score-chip ${scoreClass}">${score}% match</span>
+                  <span class="badge">${matches.length} overlapping skills</span>
+                </div>
+                <p>${highlightedDescription}</p>
+                <div>
+                  <strong>Match highlights:</strong>
+                  <div class="highlight">${matchHighlights || "<span>Add more detail for richer matches.</span>"}</div>
+                </div>
+                <div>
+                  <strong>Great topics to emphasize:</strong>
+                  <div class="highlight">${missingTags || "<span>You're covering most keywords already!</span>"}</div>
+                </div>
+                <details>
+                  <summary>Responsibilities & requirements</summary>
+                  <ul class="requirements">
+                    ${job.responsibilities
+                      .map((item) => `<li>${highlightKeywords(item, matches)}</li>`)
+                      .join("")}
+                    ${job.requirements
+                      .map((item) => `<li>${highlightKeywords(item, matches)}</li>`)
+                      .join("")}
+                  </ul>
+                </details>
+                <div class="actions">
+                  <a class="secondary" href="${job.link}" target="_blank" rel="noopener noreferrer">View posting ↗</a>
+                </div>
+              </article>
+            `;
+          })
+          .join("");
+
+        jobResultsEl.innerHTML = jobCards;
+      }
+
+      function highlightKeywords(text, keywords) {
+        if (!keywords.length) return text;
+        const unique = [...new Set(keywords)].sort((a, b) => b.length - a.length);
+        let output = text;
+        unique.forEach((keyword) => {
+          const pattern = new RegExp(`\\b(${escapeRegex(keyword)})\\b`, "gi");
+          output = output.replace(pattern, "<mark>$1</mark>");
+        });
+        return output;
+      }
+
+      function escapeRegex(text) {
+        return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      }
+
+      function renderResumeFeedback(resume, rankedJobs) {
+        const analysis = analyzeResume(resume);
+        const feedback = buildResumeFeedback(analysis, rankedJobs);
+        resumeFeedbackEl.innerHTML = feedback
+          .map(
+            (section) => `
+            <div class="feedback-card">
+              <h3>${section.title}</h3>
+              <ul>
+                ${section.points.map((point) => `<li>${point}</li>`).join("")}
+              </ul>
+            </div>
+          `
+          )
+          .join("");
+      }
+
+      function analyzeResume(resume) {
+        const lines = resume.split(/\n+/);
+        const words = extractKeywords(resume);
+        const bulletLines = lines.filter((line) => /^[-*•]/.test(line.trim())).length;
+        const metricsMentions = (resume.match(/\d+%?|\$\d+/g) || []).length;
+        const sectionsPresent = [
+          { key: "summary", present: /summary|profile|about/i.test(resume) },
+          { key: "experience", present: /experience|career/i.test(resume) },
+          { key: "education", present: /education|certification|certifications/i.test(resume) },
+        ];
+        const verbMatches = actionVerbs.filter((verb) => new RegExp(`\\b${verb}\\b`, "i").test(resume)).length;
+
+        return {
+          lineCount: lines.length,
+          wordCount: words.length,
+          bulletLines,
+          metricsMentions,
+          sectionsPresent,
+          verbMatches,
+          actionVerbCoverage: verbMatches / actionVerbs.length,
+        };
+      }
+
+      function buildResumeFeedback(analysis, rankedJobs) {
+        const points = [];
+        const topMatches = rankedJobs.slice(0, 2);
+        const suggestedKeywords = new Set();
+        topMatches.forEach((match) => {
+          match.missing.slice(0, 5).forEach((keyword) => suggestedKeywords.add(keyword));
+        });
+
+        const stylePoints = [];
+        if (analysis.wordCount < 250) {
+          stylePoints.push("Add more depth—aim for at least 300 words to cover impact and tools.");
+        } else if (analysis.wordCount > 650) {
+          stylePoints.push("Consider tightening sections to stay within a concise 1–2 page narrative.");
+        } else {
+          stylePoints.push("Word count looks strong—keep the narrative focused on outcomes.");
+        }
+
+        if (analysis.bulletLines < Math.max(4, analysis.lineCount * 0.25)) {
+          stylePoints.push("Introduce more bullet points so achievements are easy to scan.");
+        } else {
+          stylePoints.push("Great use of bullet points—continue emphasizing scannable accomplishments.");
+        }
+
+        if (analysis.verbMatches < 6) {
+          stylePoints.push("Add energetic action verbs (e.g., orchestrated, spearheaded, optimized) to open bullets.");
+        } else {
+          stylePoints.push("Strong action verbs detected—keep leading bullets with impact language.");
+        }
+
+        const contentPoints = [];
+        if (analysis.metricsMentions < 3) {
+          contentPoints.push("Quantify outcomes with metrics, revenue, adoption, or time savings in more bullets.");
+        } else {
+          contentPoints.push("Good job highlighting measurable impact—ensure each role ties to a metric.");
+        }
+
+        if (suggestedKeywords.size) {
+          contentPoints.push(
+            `Incorporate keywords like ${[...suggestedKeywords]
+              .slice(0, 5)
+              .join(", ")}, drawn from top job matches.`
+          );
+        } else {
+          contentPoints.push("Your resume already aligns closely with the matched roles—keep refining examples.");
+        }
+
+        contentPoints.push(
+          "Consider adding a short tools or stack section so recruiters can find key technologies quickly."
+        );
+
+        const flowPoints = [];
+        analysis.sectionsPresent.forEach((section) => {
+          flowPoints.push(
+            section.present
+              ? `✅ ${capitalize(section.key)} section detected.`
+              : `Add a clear ${section.key} section header to improve skimmability.`
+          );
+        });
+
+        flowPoints.push(
+          "Group achievements by role, keeping the most recent experiences first (reverse chronology)."
+        );
+        flowPoints.push(
+          "Ensure consistent tense: present for current roles, past tense for previous positions."
+        );
+
+        points.push({ title: "Style & Voice", points: stylePoints });
+        points.push({ title: "Content Opportunities", points: contentPoints });
+        points.push({ title: "Structure & Flow", points: flowPoints });
+
+        return points;
+      }
+
+      function capitalize(text) {
+        return text.charAt(0).toUpperCase() + text.slice(1);
+      }
+
+      function updateCoverLetterOptions(rankedJobs) {
+        const existingValue = coverLetterJobSelect.value;
+        coverLetterJobSelect.innerHTML =
+          '<option value="" disabled selected>Select a job after running a search</option>';
+        rankedJobs.forEach(({ job, score }) => {
+          const option = document.createElement("option");
+          option.value = job.id;
+          option.textContent = `${job.title} at ${job.company} (${score}% match)`;
+          coverLetterJobSelect.appendChild(option);
+        });
+        if (existingValue) {
+          coverLetterJobSelect.value = existingValue;
+        }
+      }
+
+      function generateCoverLetter({ name, email, summary, job, resume }) {
+        const today = new Date();
+        const formattedDate = today.toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+        const resumeSentences = resume.split(/(?<=[.!?])\s+/).slice(0, 3);
+        const introSentence = resumeSentences.length
+          ? resumeSentences[0]
+          : "I bring a strong blend of strategic thinking and hands-on execution across AI initiatives.";
+
+        return `
+${formattedDate}
+
+${job.company}
+Hiring Team
+
+Dear Hiring Team,
+
+I am excited to apply for the ${job.title} role at ${job.company}. ${introSentence}
+
+${summary}
+
+What draws me to ${job.company} is the opportunity to contribute to ${job.description.toLowerCase()}. The role's focus on ${job.tags
+          .slice(0, 3)
+          .join(", ")} resonates with my experience and the impact I've delivered across previous teams.
+
+I would welcome the chance to discuss how my background can accelerate your roadmap. Thank you for your time and consideration.
+
+Sincerely,
+${name}
+${email ? email : ""}
+        `.trim();
+      }
+    </script>
+  </body>
+</html>
