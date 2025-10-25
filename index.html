@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI JobMatch & Resume Optimizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <div class="logo">AI JobMatch</div>
+        <nav class="nav">
+          <a href="#overview">Overview</a>
+          <a href="#features">Core Features</a>
+          <a href="#optimizer">Optimizer</a>
+          <a href="#stack">Stack</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#roadmap">Roadmap</a>
+        </nav>
+        <a class="cta" href="#demo">Request Demo</a>
+      </div>
+    </header>
+
+    <main>
+      <section id="hero" class="hero">
+        <div class="container hero-content">
+          <div class="hero-copy">
+            <span class="tag">Job search, supercharged</span>
+            <h1>Find, optimize, and apply with AI-powered confidence.</h1>
+            <p>
+              AI JobMatch analyzes your resume, scouts tailored LinkedIn openings,
+              and crafts personalized cover letters—so you can focus on the
+              opportunities that matter.
+            </p>
+            <div class="hero-actions">
+              <a class="btn primary" href="#demo">Launch Pilot</a>
+              <a class="btn secondary" href="#overview">Explore product</a>
+            </div>
+            <dl class="hero-metrics">
+              <div>
+                <dt>85%+</dt>
+                <dd>Targeted match score accuracy</dd>
+              </div>
+              <div>
+                <dt>&lt;10s</dt>
+                <dd>Average cover letter turnaround</dd>
+              </div>
+              <div>
+                <dt>90%</dt>
+                <dd>Resume feedback satisfaction goal</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="hero-card" aria-labelledby="hero-card-title">
+            <h2 id="hero-card-title">Smart Match Snapshot</h2>
+            <ul>
+              <li>
+                <div>
+                  <span class="label">Role</span>
+                  <strong>Data Analyst, Accenture</strong>
+                </div>
+                <span class="score good">87%</span>
+              </li>
+              <li>
+                <div>
+                  <span class="label">Skill overlap</span>
+                  <strong>92%</strong>
+                </div>
+                <span class="pill">Strong</span>
+              </li>
+              <li>
+                <div>
+                  <span class="label">Experience relevance</span>
+                  <strong>4.5 / 5</strong>
+                </div>
+                <span class="pill">Great fit</span>
+              </li>
+              <li>
+                <div>
+                  <span class="label">Suggested next step</span>
+                  <strong>Tailor summary for SQL automation</strong>
+                </div>
+              </li>
+            </ul>
+            <a class="card-link" href="#dashboard">View dashboard →</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="overview" class="section overview">
+        <div class="container">
+          <h2>Product Overview</h2>
+          <p>
+            Built for job seekers, career switchers, and students entering the
+            workforce, AI JobMatch streamlines every step of the application
+            journey. Upload a resume, specify your goals, and let the platform do
+            the heavy lifting.
+          </p>
+          <div class="overview-grid">
+            <article>
+              <h3>🔍 Intelligent job search</h3>
+              <p>
+                Aggregates LinkedIn roles that align with your background and
+                synthesizes key details into actionable insights.
+              </p>
+            </article>
+            <article>
+              <h3>🧾 Resume optimization</h3>
+              <p>
+                AI-powered critiques ensure clarity, structure, and keyword
+                alignment for ATS screening.
+              </p>
+            </article>
+            <article>
+              <h3>💌 Cover letter generation</h3>
+              <p>
+                Instantly drafts tailored cover letters calibrated to tone and
+                company culture.
+              </p>
+            </article>
+            <article>
+              <h3>📊 Job match scoring</h3>
+              <p>
+                Transparent scoring blends skills, experience, title fit, and
+                tone alignment for confident prioritization.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="section feature-breakdown">
+        <div class="container">
+          <h2>Core Feature Pillars</h2>
+          <div class="pillars">
+            <article>
+              <h3>Resume Parser</h3>
+              <p>
+                Accepts PDF, DOCX, or text inputs and extracts skills, roles,
+                industries, experience years, and achievements using NLP and
+                embeddings.
+              </p>
+              <ul>
+                <li>Parsing via pdfminer.six / python-docx</li>
+                <li>spaCy powered named entity recognition</li>
+                <li>OpenAI embeddings for semantic tagging</li>
+              </ul>
+            </article>
+            <article>
+              <h3>Job Research &amp; Matching</h3>
+              <p>
+                Connects to LinkedIn Jobs or SerpAPI, summarizes postings, and
+                computes a holistic match percentage.
+              </p>
+              <pre><code>match_score = (
+    skill_overlap * 0.4 +
+    exp_relevance * 0.3 +
+    title_similarity * 0.15 +
+    location_match * 0.1 +
+    tone_alignment * 0.05
+)
+</code></pre>
+            </article>
+            <article id="optimizer">
+              <h3>Resume Optimizer</h3>
+              <p>
+                Scores clarity, structure, keyword relevance, and ATS readiness,
+                delivering visual feedback and suggested improvements.
+              </p>
+              <pre><code>{
+  "clarity": 4,
+  "structure": 5,
+  "keyword_relevance": 4,
+  "ATS_ready": 3,
+  "suggestions": ["Add metrics to highlight impact", "Improve leadership summary"]
+}
+</code></pre>
+            </article>
+            <article>
+              <h3>Cover Letter Studio</h3>
+              <p>
+                Generates polished, 250-word letters tuned to your selected tone
+                and aligned to the job description.
+              </p>
+              <ul>
+                <li>Tone presets: Formal, Conversational, Concise</li>
+                <li>Rich text editor with live GPT output</li>
+                <li>Export-ready formatting</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section architecture" id="workflow">
+        <div class="container">
+          <h2>Workflow at a glance</h2>
+          <ol class="workflow">
+            <li>
+              <h3>1. Upload &amp; parse resume</h3>
+              <p>Extract key entities, experiences, and achievements.</p>
+            </li>
+            <li>
+              <h3>2. Configure preferences</h3>
+              <p>Define desired roles, seniority, preferred locations, and tone.</p>
+            </li>
+            <li>
+              <h3>3. Match &amp; prioritize</h3>
+              <p>Semantic search ranks roles and explains match scores.</p>
+            </li>
+            <li>
+              <h3>4. Optimize &amp; apply</h3>
+              <p>Review feedback, generate cover letters, and track progress.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="dashboard" class="section dashboard">
+        <div class="container">
+          <h2>Dashboard &amp; Job Tracker</h2>
+          <p>A centralized hub to monitor job applications, status, and key notes.</p>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Job Title</th>
+                  <th>Company</th>
+                  <th>Match %</th>
+                  <th>Status</th>
+                  <th>Date Saved</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Data Analyst</td>
+                  <td>Accenture</td>
+                  <td><span class="score good">87%</span></td>
+                  <td>Applied</td>
+                  <td>Oct 24, 2025</td>
+                </tr>
+                <tr>
+                  <td>Product Manager</td>
+                  <td>Notion</td>
+                  <td><span class="score medium">79%</span></td>
+                  <td>Interview</td>
+                  <td>Oct 26, 2025</td>
+                </tr>
+                <tr>
+                  <td>Marketing Strategist</td>
+                  <td>HubSpot</td>
+                  <td><span class="score low">68%</span></td>
+                  <td>Saved</td>
+                  <td>Oct 27, 2025</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="stack" class="section stack">
+        <div class="container">
+          <h2>Architecture &amp; Stack</h2>
+          <div class="stack-grid">
+            <div>
+              <h3>Frontend</h3>
+              <p>Next.js, TypeScript, Tailwind CSS</p>
+            </div>
+            <div>
+              <h3>Backend API</h3>
+              <p>FastAPI with modular routes, services, and models</p>
+            </div>
+            <div>
+              <h3>Database</h3>
+              <p>PostgreSQL via Prisma ORM</p>
+            </div>
+            <div>
+              <h3>Vector Store</h3>
+              <p>Pinecone or FAISS for embedding similarity search</p>
+            </div>
+            <div>
+              <h3>AI Layer</h3>
+              <p>LangChain with GPT-4/5 for prompts and scoring</p>
+            </div>
+            <div>
+              <h3>Infrastructure</h3>
+              <p>Vercel for frontend, Railway / Render for backend services</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section api" id="api">
+        <div class="container">
+          <h2>API Surface Area</h2>
+          <div class="api-grid">
+            <article>
+              <h3>Upload Resume</h3>
+              <code>POST /api/upload-resume</code>
+              <p>Parses files and returns structured JSON with extracted entities.</p>
+            </article>
+            <article>
+              <h3>Fetch Jobs</h3>
+              <code>GET /api/jobs</code>
+              <p>Fetches curated LinkedIn postings aligned to user preferences.</p>
+            </article>
+            <article>
+              <h3>Match Score</h3>
+              <code>POST /api/match</code>
+              <p>Calculates match percentage and rationale.</p>
+            </article>
+            <article>
+              <h3>Optimize Resume</h3>
+              <code>POST /api/optimize-resume</code>
+              <p>Returns improvement suggestions and ATS scores.</p>
+            </article>
+            <article>
+              <h3>Cover Letters</h3>
+              <code>POST /api/generate-cover-letter</code>
+              <p>Creates a personalized letter for the selected job.</p>
+            </article>
+            <article>
+              <h3>Dashboard Data</h3>
+              <code>GET /api/dashboard</code>
+              <p>Delivers saved jobs, analytics, and progress summaries.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section prompts">
+        <div class="container">
+          <h2>Prompt Templates</h2>
+          <div class="prompt-grid">
+            <article>
+              <h3>Resume Extraction</h3>
+              <p>
+                Extract job titles, skills, years of experience, education, and
+                quantifiable achievements from this resume. Return JSON.
+              </p>
+            </article>
+            <article>
+              <h3>Job Matching</h3>
+              <p>
+                Compare this resume summary with the job description. Return a
+                relevance score (0–100) and a one-sentence reasoning.
+              </p>
+            </article>
+            <article>
+              <h3>Resume Feedback</h3>
+              <p>
+                Critique the resume’s clarity, keyword density, and professional
+                tone. Provide 5 bullet-point improvements.
+              </p>
+            </article>
+            <article>
+              <h3>Cover Letter</h3>
+              <p>
+                Write a customized, 250-word professional cover letter using the
+                user’s resume and job description.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="pricing" class="section pricing">
+        <div class="container">
+          <h2>Monetization Strategy</h2>
+          <div class="pricing-grid">
+            <article>
+              <h3>Free</h3>
+              <p>3 job searches per day plus one cover letter.</p>
+              <span class="price">$0</span>
+            </article>
+            <article>
+              <h3>Pro</h3>
+              <p>Unlimited searches, resume analysis, and cover letters.</p>
+              <span class="price">$15/mo</span>
+            </article>
+            <article>
+              <h3>Enterprise</h3>
+              <p>Custom dashboards, analytics, and PDF exports.</p>
+              <span class="price">$50/mo</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="roadmap" class="section roadmap">
+        <div class="container">
+          <h2>Phase 2 &amp; Beyond</h2>
+          <ul>
+            <li>Chrome extension for instant LinkedIn match scores.</li>
+            <li>AI interview preparation with job-specific question banks.</li>
+            <li>Automated LinkedIn profile rewrite from resume.</li>
+            <li>Salary intelligence from public databases.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="demo" class="section demo">
+        <div class="container">
+          <h2>Ready to accelerate job matching?</h2>
+          <p>
+            Get in touch to join the private beta, integrate with your ATS, or
+            explore enterprise analytics.
+          </p>
+          <form class="demo-form">
+            <div class="field-group">
+              <label for="name">Name</label>
+              <input id="name" type="text" name="name" placeholder="Ada Lovelace" />
+            </div>
+            <div class="field-group">
+              <label for="email">Email</label>
+              <input id="email" type="email" name="email" placeholder="ada@example.com" />
+            </div>
+            <div class="field-group">
+              <label for="company">Company</label>
+              <input
+                id="company"
+                type="text"
+                name="company"
+                placeholder="Acme Corp"
+              />
+            </div>
+            <button type="submit" class="btn primary">Request access</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© <span id="year"></span> AI JobMatch. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="docs/PRD.md">PRD</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
